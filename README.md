@@ -49,4 +49,4 @@ La previsió de núvols ve de l’API d’[Open-Meteo.com](https://open-meteo.co
 
 ## Llicència
 
-MIT. Vegeu `LICENSE`.
+Autor: Albert Saragossa Alòs
