@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ca"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cel de nit · planificador</title>
+<meta name="description" content="Planificador d’astrofotografia: Lluna, foscor, objectes visibles, camp de visió i previsió de núvols.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔭%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0f6;--pn:#fff;--ink:#141a33;--mut:#5b6384;--ln:#d5d9e8;--acc:#2a5bd7;--sun:#c78a12;--moon:#6b7390;--obj:#0f8f86;--d0:#f6e7b8;--d1:#c7cdea;--d2:#9aa5d8;--d3:#5f6bb0;--d4:#1b2350;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090d1d;--pn:#121936;--ink:#e6e9ff;--mut:#98a0c8;--ln:#26305a;--acc:#7ea2ff;--sun:#f2b84b;--moon:#cfd5ee;--obj:#5fd0c4;--d0:#4a4466;--d1:#2c3566;--d2:#1f2754;--d3:#141b3d;--d4:#090d1d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#090d1d;--pn:#121936;--ink:#e6e9ff;--mut:#98a0c8;--ln:#26305a;--acc:#7ea2ff;--sun:#f2b84b;--moon:#cfd5ee;--obj:#5fd0c4;--d0:#4a4466;--d1:#2c3566;--d2:#1f2754;--d3:#141b3d;--d4:#090d1d;color-scheme:dark}
+:root[data-theme="night"]{--bg:#120404;--pn:#1c0707;--ink:#ff6a5c;--mut:#b24b42;--ln:#3d1210;--acc:#ff6a5c;--sun:#ff8a5c;--moon:#ffb0a8;--obj:#ff9c8a;--d0:#3a1412;--d1:#2c0f0e;--d2:#220b0b;--d3:#190808;--d4:#120404;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:18px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{font-size:clamp(2.2rem,8vw,3.6rem);line-height:1;margin:0;font-weight:800;letter-spacing:-.02em}
+header p{margin:6px 0 0;color:var(--mut);max-width:34ch}
+h2{font-size:1.25rem;margin:0 0 10px;font-weight:600}
+section{border-top:1px solid var(--ln);margin-top:28px;padding-top:18px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ln)}
+a.btn{display:inline-block;text-decoration:none;border-radius:8px;padding:8px 14px;font-weight:600;color:var(--ink);border:1px solid var(--ln)}
+input,select,textarea{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;width:100%}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+label{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--mut);flex:1 1 120px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.note{color:var(--mut);font-size:.9rem;margin:8px 0 0}
+.chart{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:8px;overflow-x:auto}
+.chart svg{width:100%;min-width:560px;height:auto;display:block}
+.chart text{fill:var(--ink);font-size:11px;font-family:inherit}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--mut);margin-top:8px}
+.leg i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+.moon{display:flex;gap:16px;align-items:center}
+.moon b{font-size:1.5rem;display:block;line-height:1.2}
+dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+dt{color:var(--mut)}dd{margin:0;font-weight:600;text-align:right}
+.obj{display:grid;grid-template-columns:1.3fr 1fr 2fr;gap:4px 14px;align-items:center;width:100%;text-align:left;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--ln);border-radius:0;padding:10px 4px;font-weight:400}
+.obj[aria-pressed="true"]{background:var(--pn)}
+.obj strong{display:block}.obj small{color:var(--mut)}
+.bar{height:6px;background:var(--ln);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--obj)}
+@media(max-width:640px){.obj{grid-template-columns:1fr 1fr}.obj>:last-child{grid-column:1/-1}}
+.log li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln);list-style:none}
+.log ul{padding:0;margin:12px 0 0}.log small{color:var(--mut);display:block}
+</style></head><body><main>
+<header><div><h1>Cel de nit</h1><p>Planifica les sessions d’astrofotografia amb el Dwarf Mini.</p></div>
+<button class="ghost" id="night" aria-pressed="false">Mode nit (vermell)</button></header>
+
+<section style="border:0;margin-top:20px;padding:0"><div class="row">
+<label>Latitud<input id="lat" type="number" step="0.01" value="41.58"></label>
+<label>Longitud<input id="lon" type="number" step="0.01" value="1.62"></label>
+<label>Data<input id="date" type="date"></label>
+<button id="geo">Usa la meva ubicació</button><a class="btn" id="maplink" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">Cerca al mapa</a></div>
+<label style="margin-top:12px">Enganxa aquí les coordenades o l’enllaç del mapa<input id="paste" type="text" placeholder="41.58, 1.62 o un enllaç d’OpenStreetMap o Google Maps"></label>
+<p class="note" id="geomsg">Les hores es mostren en el fus horari del teu dispositiu. Les coordenades són editables.</p></section>
+
+<section style="border:0;padding:0;margin-top:20px"><div class="chart"><svg id="chart" viewBox="0 0 720 250" role="img" aria-label="Altura del Sol, la Lluna i l’objecte triat durant la nit"></svg></div>
+<div class="leg"><span><i style="background:var(--sun)"></i>Sol</span><span><i style="background:var(--moon)"></i>Lluna</span><span><i style="background:var(--obj)"></i>Objecte triat a la llista</span><span>La franja més fosca és el cel totalment fosc.</span><span><i style="background:var(--mut);opacity:.5"></i>Núvols previstos</span></div>
+<p class="note" id="clmsg" style="margin-top:10px">Previsió de núvols: carregant…</p>
+<details style="margin-top:8px"><summary>Introdueix els núvols a mà (si no hi ha connexió)</summary><div class="row" style="margin-top:10px"><label style="flex:2 1 220px">Núvols (% per hora)<input id="cl" type="text" inputmode="decimal" placeholder="Per exemple: 10 20 40 80 90"></label><label>A partir de les (h)<input id="clh" type="number" min="0" max="23" value="20"></label></div></details></section>
+
+<section class="two"><div><h2>Lluna</h2><div class="moon"><svg id="mphase" width="84" height="84" viewBox="-42 -42 84 84" aria-hidden="true"></svg><div id="mtxt"></div></div><dl id="mdl" style="margin-top:14px"></dl></div>
+<div><h2>Foscor</h2><dl id="ddl"></dl></div></section>
+
+<section><h2>Què fotografiar aquesta nit</h2><div id="objs"></div><p class="note">Ordenat per hores amb l’objecte per sobre de 30° en cel fosc (i, si hi ha previsió, amb menys del 50% de núvols), restant-ne si la Lluna és brillant i propera. Toca un objecte per veure’n l’altura al gràfic.</p></section>
+
+<section><h2>Camp de visió</h2><div class="row">
+<label>Focal (mm)<input id="foc" type="number" step="1" value="100"></label>
+<label>Sensor, ample (mm)<input id="sw" type="number" step="0.01" value="5.57"></label>
+<label>Sensor, alt (mm)<input id="sh" type="number" step="0.01" value="3.13"></label></div>
+<p id="fovout" style="font-size:1.2rem;font-weight:600;margin:12px 0 0"></p>
+<p class="note">Valors de partida orientatius (els del Dwarf II en mode telefoto), no els del Mini. Substitueix-los pels de les especificacions oficials del Mini; la llista d’objectes els fa servir per dir si hi caben.</p></section>
+
+<section class="log"><h2>Registre de sessions</h2><div class="row">
+<label>Data<input id="ldate" type="date"></label>
+<label>Objecte<input id="lobj" list="ol" placeholder="M31, M42…"></label>
+<label>Cel (1–5)<select id="lsky"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label></div>
+<datalist id="ol"></datalist>
+<label style="margin-top:12px">Notes (exposició, apilament, incidències)<textarea id="lnote" rows="2"></textarea></label>
+<p style="margin:12px 0 0"><button id="ladd">Desa la sessió</button></p><ul id="llist"></ul>
+<p class="note">Les sessions es desen només en aquest navegador.</p></section>
+<p class="note" style="margin-top:32px">Previsió de núvols: dades d’<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (llicència CC BY 4.0). Els càlculs astronòmics són aproximats; contrasta’ls amb Stellarium abans d’una sessió important.</p>
+</main>
+<script>
+const R=Math.PI/180,$=id=>document.getElementById(id);
+const OBJ=[["M31","Galàxia d’Andròmeda","galàxia",.712,41.27,178],["M42","Nebulosa d’Orió","nebulosa",5.588,-5.39,85],["M45","Plèiades","cúmul",3.79,24.12,110],["M33","Galàxia del Triangle","galàxia",1.564,30.66,71],["NGC 869","Cúmul doble de Perseu","cúmul",2.35,57.13,60],["M1","Nebulosa del Cranc","nebulosa",5.575,22.01,6],["M13","Cúmul d’Hèrcules","cúmul",16.695,36.46,20],["M27","Nebulosa Halteri","nebulosa",19.993,22.72,8],["M57","Nebulosa de l’Anell","nebulosa",18.893,33.03,1.4],["M8","Nebulosa de la Llacuna","nebulosa",18.06,-24.38,90],["M16","Nebulosa de l’Àguila","nebulosa",18.313,-13.82,35],["M51","Galàxia del Remolí","galàxia",13.498,47.2,11],["M81","Galàxia de Bode","galàxia",9.926,69.07,27],["M101","Galàxia del Molinet","galàxia",14.053,54.35,29],["NGC 7000","Nebulosa Nord-americana","nebulosa",20.98,44.33,120]];
+const jd=d=>d.getTime()/864e5+2440587.5;
+function sunEq(J){const n=J-2451545,L=280.46+.9856474*n,g=(357.528+.9856003*n)*R,l=(L+1.915*Math.sin(g)+.02*Math.sin(2*g))*R,e=(23.439-4e-7*n)*R;return{ra:Math.atan2(Math.cos(e)*Math.sin(l),Math.cos(l)),dec:Math.asin(Math.sin(e)*Math.sin(l)),lam:l/R}}
+function moonEq(J){const T=(J-2451545)/36525,s=x=>Math.sin(x*R);
+const lam=218.32+481267.881*T+6.29*s(135+477198.87*T)-1.27*s(259.3-413335.36*T)+.66*s(235.7+890534.22*T)+.21*s(269.9+954397.74*T)-.19*s(357.5+35999.05*T)-.11*s(186.5+966404.03*T);
+const b=(5.13*s(93.3+483202.02*T)+.28*s(228.2+960400.89*T)-.28*s(318.3+6003.15*T)-.17*s(217.6-407332.21*T))*R,l=lam*R;
+const x=Math.cos(b)*Math.cos(l),y=.9175*Math.cos(b)*Math.sin(l)-.3978*Math.sin(b),z=.3978*Math.cos(b)*Math.sin(l)+.9175*Math.sin(b);
+return{ra:Math.atan2(y,x),dec:Math.asin(z),lam}}
+function alt(ra,dec,J,lat,lon){const H=(280.46061837+360.98564736629*(J-2451545)+lon)*R-ra,p=lat*R;return Math.asin(Math.sin(p)*Math.sin(dec)+Math.cos(p)*Math.cos(dec)*Math.cos(H))/R}
+const hm=t=>t==null?"—":new Date(t).toLocaleTimeString("ca",{hour:"2-digit",minute:"2-digit"});
+function cross(T,A,thr,rise){for(let i=1;i<A.length;i++){const a=A[i-1],b=A[i];if(rise?(a<thr&&b>=thr):(a>=thr&&b<thr))return T[i-1]+(thr-a)/(b-a)*(T[i]-T[i-1])}return null}
+let SEL=null,LAST=null,CLOUD=null,FKEY="",FT=0;
+async function loadCloud(key,T,lat,lon){
+ const msg=$("clmsg");msg.textContent="Previsió de núvols: carregant…";
+ try{const d0=new Date(T[0]).toISOString().slice(0,10),d1=new Date(T[T.length-1]).toISOString().slice(0,10);
+  const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=cloud_cover&timeformat=unixtime&start_date=${d0}&end_date=${d1}`);
+  const j=await r.json();if(key!==FKEY)return;if(!r.ok||!j.hourly)throw new Error(j.reason||"sense dades");
+  CLOUD={t:j.hourly.time.map(x=>x*1000),c:j.hourly.cloud_cover};msg.textContent="Previsió de núvols carregada (Open-Meteo)."}
+ catch(e){if(key!==FKEY)return;CLOUD=null;msg.textContent="No he pogut carregar la previsió de núvols ("+(e.message||"error")+"). Pots introduir-la a mà més avall."}
+ render()}
+function render(){
+ setLink();const lat=+$("lat").value,lon=+$("lon").value,v=$("date").value;if(!v||isNaN(lat)||isNaN(lon))return;
+ const [y,m,d]=v.split("-").map(Number),t0=new Date(y,m-1,d,12).getTime(),N=145,T=[],J=[],S=[],M=[];
+ for(let i=0;i<N;i++){const t=t0+i*6e5,j=jd(new Date(t)),s=sunEq(j),mo=moonEq(j),ma=alt(mo.ra,mo.dec,j,lat,lon);T.push(t);J.push(j);S.push(alt(s.ra,s.dec,j,lat,lon));M.push(ma-.95*Math.cos(ma*R))}
+ const thr=S.some(x=>x<-18)?-18:-12,dark=i=>S[i]<thr;
+ const key=lat+"|"+lon+"|"+v;if(key!==FKEY){FKEY=key;CLOUD=null;clearTimeout(FT);FT=setTimeout(()=>loadCloud(key,T,lat,lon),600)}
+ const CL=T.map(()=>null);
+ if(CLOUD){T.forEach((t,i)=>{const k=Math.round((t-CLOUD.t[0])/36e5);if(k>=0&&k<CLOUD.t.length&&Math.abs(t-CLOUD.t[k])<=18e5&&CLOUD.c[k]!=null)CL[i]=CLOUD.c[k]})}
+ else{const cv=$("cl").value.split(/[\s,;]+/).map(parseFloat).filter(x=>isFinite(x)).map(x=>Math.min(100,Math.max(0,x))).slice(0,24),h0=+$("clh").value||0;
+  cv.forEach((c,k)=>{const i0=(((h0+k)%24-12+24)%24)*6;for(let q=0;q<6;q++)if(i0+q<N)CL[i0+q]=c})}
+ const hasCL=CL.some(c=>c!=null),dc=CL.filter((c,i)=>c!=null&&dark(i));
+ const mid=72,s0=sunEq(J[mid]),m0=moonEq(J[mid]),el=((m0.lam-s0.lam)%360+360)%360,ill=(1-Math.cos(el*R))/2;
+ const names=["Lluna nova","Lluna creixent","Quart creixent","Gibosa creixent","Lluna plena","Gibosa minvant","Quart minvant","Lluna minvant"],nm=names[Math.floor(((el+22.5)%360)/45)];
+ // fase
+ const c=Math.cos(el*R),wax=el<180;
+ $("mphase").innerHTML=`<g transform="scale(${wax?1:-1},1)"><circle r="38" fill="var(--d3)" stroke="var(--ln)"/><path d="M0,-38A38 38 0 0 1 0,38Z" fill="var(--moon)"/><ellipse rx="${(38*Math.abs(c)).toFixed(1)}" ry="38" fill="${c>0?"var(--d3)":"var(--moon)"}"/></g>`;
+ $("mtxt").innerHTML=`<b>${nm}</b>${Math.round(ill*100)}% il·luminada`;
+ const mr=cross(T,M,-.57,true),ms=cross(T,M,-.57,false),free=S.reduce((n,x,i)=>n+(dark(i)&&M[i]<0?1:0),0)/6;
+ $("mdl").innerHTML=`<dt>Surt</dt><dd>${hm(mr)}</dd><dt>Es pon</dt><dd>${hm(ms)}</dd><dt>Hores de cel fosc sense Lluna</dt><dd>${free.toFixed(1)} h</dd>`;
+ const row=(a,b)=>`<dt>${a}</dt><dd>${b}</dd>`,dh=S.filter((x,i)=>dark(i)).length/6;
+ $("ddl").innerHTML=row("Es pon el Sol",hm(cross(T,S,-.83,false)))+row("Fi del crepuscle civil",hm(cross(T,S,-6,false)))+row("Fi del crepuscle nàutic",hm(cross(T,S,-12,false)))+row("Comença la foscor total",hm(cross(T,S,-18,false)))+row("Acaba la foscor total",hm(cross(T,S,-18,true)))+row("Surt el Sol",hm(cross(T,S,-.83,true)))+row("Hores de cel fosc",dh.toFixed(1)+" h")+(dc.length?row("Núvols previstos en cel fosc",Math.round(dc.reduce((a,b)=>a+b,0)/dc.length)+"%"):"");
+ // camp de visió
+ const f=+$("foc").value,sw=+$("sw").value,sh=+$("sh").value,fw=2*Math.atan(sw/2/f)/R,fh=2*Math.atan(sh/2/f)/R;
+ $("fovout").textContent=f>0?`${fw.toFixed(2)}° × ${fh.toFixed(2)}° (${(fw*60).toFixed(0)}′ × ${(fh*60).toFixed(0)}′)`:"";
+ // objectes
+ const rows=OBJ.map(o=>{const ra=o[3]*15*R,dec=o[4]*R,A=J.map(j=>alt(ra,dec,j,lat,lon));let best=-99,bi=-1;const good=[];
+  A.forEach((a,i)=>{if(dark(i)){if(a>best){best=a;bi=i}if(a>=30)good.push(i)}});
+  let sep=null,score=0;const h=good.length/6,hc=good.filter(i=>CL[i]==null||CL[i]<50).length/6;
+  if(bi>=0){const mo=moonEq(J[bi]);sep=Math.acos(Math.min(1,Math.max(-1,Math.sin(dec)*Math.sin(mo.dec)+Math.cos(dec)*Math.cos(mo.dec)*Math.cos(ra-mo.ra))))/R;
+   const pen=M[bi]>0?ill*Math.max(0,1-sep/70):0;score=hc*(1-.7*pen)+Math.max(0,best)/90*.4}
+  return{o,A,best,bi,good,h,hc,sep,score}}).sort((a,b)=>b.score-a.score);
+ LAST={T,S,M,rows,N,CL};
+ $("objs").innerHTML=rows.map(r=>{const o=r.o,fit=f>0?(o[5]>fw*60?"Més gran que el camp: caldria mosaic":(o[5]<fh*60*.05?"Molt petit al camp":"Hi cap al camp")):"";
+  const win=r.good.length?`${hm(T[r.good[0]])}–${hm(T[r.good[r.good.length-1]])}`:"Cap tram per sobre de 30°";
+  return `<button class="obj" data-id="${o[0]}" aria-pressed="${SEL===o[0]}"><span><strong>${o[0]} · ${o[1]}</strong><small>${o[2]} · ${o[5]}′</small></span><span>${win}<small>Altura màx. ${r.bi>=0?Math.round(r.best)+"°":"—"}${r.sep!=null?" · "+Math.round(r.sep)+"° de la Lluna":""}</small></span><span><div class="bar"><i style="width:${Math.min(100,r.score/6*100)}%"></i></div><small>${hasCL?r.hc.toFixed(1)+" h amb cel clar (de "+r.h.toFixed(1)+" h útils)":r.h.toFixed(1)+" h útils"} · ${fit}</small></span></button>`}).join("");
+ chart();
+}
+function chart(){
+ if(!LAST)return;const {T,S,M,rows,N,CL}=LAST,W=720,H=250,L=30,B=24,w=(W-L-4)/(N-1),Y=a=>10+(H-10-B)*(1-(a+20)/110),X=i=>L+i*w;let g="";
+ for(let i=0;i<N-1;i++){const s=S[i],k=s>-.83?0:s>-6?1:s>-12?2:s>-18?3:4;g+=`<rect x="${X(i).toFixed(1)}" y="10" width="${(w+.6).toFixed(1)}" height="${H-10-B}" style="fill:var(--d${k})"/>`}
+ [0,30,60,90].forEach(a=>g+=`<line x1="${L}" x2="${W-4}" y1="${Y(a)}" y2="${Y(a)}" stroke="var(--mut)" stroke-opacity="${a?.25:.7}" stroke-dasharray="${a?"3 4":""}"/><text x="2" y="${Y(a)+4}" style="fill:var(--mut)">${a}°</text>`);
+ for(let i=0;i<N;i+=18)g+=`<text x="${X(i)}" y="${H-6}" text-anchor="middle" style="fill:var(--mut)">${new Date(T[i]).getHours()}h</text>`;
+ const pl=(A,c,sw)=>`<polyline fill="none" stroke="var(${c})" stroke-width="${sw}" points="${A.map((a,i)=>X(i).toFixed(1)+","+Y(Math.max(-20,a)).toFixed(1)).join(" ")}"/>`;
+ for(let i=0;i<N-1;i++){const c=CL[i];if(c==null)continue;g+=`<rect x="${X(i).toFixed(1)}" y="10" width="${(w+.6).toFixed(1)}" height="${H-10-B}" style="fill:var(--mut);fill-opacity:${(c/100*.55).toFixed(2)}"/>`}
+ for(let i=0;i<N;i+=6)if(CL[i]!=null)g+=`<text x="${X(i).toFixed(1)}" y="24" text-anchor="middle" style="font-size:9px">${Math.round(CL[i])}%</text>`;
+ g+=pl(S,"--sun",2)+pl(M,"--moon",2);const r=rows.find(r=>r.o[0]===SEL);if(r)g+=pl(r.A,"--obj",3);
+ $("chart").innerHTML=g;
+}
+$("objs").addEventListener("click",e=>{const b=e.target.closest(".obj");if(!b)return;SEL=SEL===b.dataset.id?null:b.dataset.id;render()});
+["lat","lon","date","foc","sw","sh"].forEach(id=>$(id).addEventListener("input",render));
+$("geo").onclick=()=>{try{navigator.geolocation.getCurrentPosition(p=>{$("lat").value=p.coords.latitude.toFixed(2);$("lon").value=p.coords.longitude.toFixed(2);$("geomsg").textContent="Ubicació actualitzada.";render()},()=>{$("geomsg").textContent="No he pogut obtenir la ubicació. Escriu-la a mà."})}catch(e){$("geomsg").textContent="No he pogut obtenir la ubicació. Escriu-la a mà."}};
+function setLink(){const a=+$("lat").value,b=+$("lon").value;$("maplink").href=isNaN(a)||isNaN(b)?"https://www.openstreetmap.org/":`https://www.openstreetmap.org/?mlat=${a}&mlon=${b}#map=13/${a}/${b}`}
+function parseCoords(s){const m=s.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/)||s.match(/!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/)||s.match(/#map=\d+\/(-?\d+\.?\d*)\/(-?\d+\.?\d*)/)||s.match(/mlat=(-?\d+\.?\d*)&mlon=(-?\d+\.?\d*)/)||s.match(/(-?\d+\.\d+)\s*[,;\s]\s*(-?\d+\.\d+)/);if(!m)return null;const a=+m[1],b=+m[2];return Math.abs(a)<=90&&Math.abs(b)<=180?[a,b]:null}
+$("paste").addEventListener("input",e=>{const v=e.target.value.trim();if(!v)return;const c=parseCoords(v);if(!c){$("geomsg").textContent="No hi trobo coordenades. Copia-les del mapa (per exemple, 41.58, 1.62) o enganxa l’enllaç complet, no el curt.";return}$("lat").value=c[0].toFixed(4);$("lon").value=c[1].toFixed(4);$("geomsg").textContent="Ubicació presa del mapa.";render()});
+$("cl").addEventListener("input",render);$("clh").addEventListener("input",render);
+$("night").onclick=()=>{const on=document.documentElement.dataset.theme!=="night";if(on)document.documentElement.dataset.theme="night";else document.documentElement.removeAttribute("data-theme");$("night").setAttribute("aria-pressed",on)};
+// registre
+let LOG=[];try{LOG=JSON.parse(localStorage.getItem("cn-log")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("cn-log",JSON.stringify(LOG))}catch(e){}};
+function drawLog(){const ul=$("llist");ul.innerHTML="";if(!LOG.length){ul.innerHTML="<li><small>Encara no hi ha sessions. Desa’n una després de la primera nit.</small></li>";return}
+ LOG.forEach((s,i)=>{const li=document.createElement("li"),d=document.createElement("div"),b=document.createElement("button");d.innerHTML="<strong></strong><small></small>";d.firstChild.textContent=`${s.d} · ${s.o||"Sense objecte"} · cel ${s.k}/5`;d.lastChild.textContent=s.n||"";b.className="ghost";b.textContent="Elimina";b.onclick=()=>{LOG.splice(i,1);save();drawLog()};li.append(d,b);ul.append(li)})}
+$("ladd").onclick=()=>{LOG.unshift({d:$("ldate").value,o:$("lobj").value.trim(),k:$("lsky").value,n:$("lnote").value.trim()});save();$("lobj").value="";$("lnote").value="";drawLog()};
+$("ol").innerHTML=OBJ.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("");
+const today=new Date().toLocaleDateString("sv");$("date").value=today;$("ldate").value=today;drawLog();render();
+</script></body></html>
