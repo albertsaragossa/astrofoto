@@ -18,22 +18,7 @@ Planificador d’astrofotografia pensat per a les sessions amb el **Dwarf Mini**
 
 Obre `index.html` al navegador, o la pàgina publicada. Indica la ubicació i la data, i la pàgina fa la resta. La previsió de núvols necessita connexió a internet; sense ella, hi ha un camp per introduir els percentatges a mà.
 
-> **Important:** el camp de visió porta valors de partida orientatius (focal 100 mm, sensor 5,57 × 3,13 mm), que no són els del Dwarf Mini. Substitueix-los pels de les especificacions oficials del Mini.
-
-## Publicar-la a GitHub Pages
-
-1. Crea un repositori nou a GitHub (per exemple `cel-de-nit`), públic.
-2. Puja-hi els fitxers d’aquesta carpeta: **Add file → Upload files**, arrossega’ls i fes **Commit changes**. Amb git:
-   ```bash
-   git init
-   git add .
-   git commit -m "Primera versió"
-   git branch -M main
-   git remote add origin https://github.com/EL_TEU_USUARI/cel-de-nit.git
-   git push -u origin main
-   ```
-3. Al repositori, ves a **Settings → Pages**. A **Build and deployment**, tria **Deploy from a branch**, la branca `main` i la carpeta `/ (root)`, i desa.
-4. Al cap d’un parell de minuts, la pàgina és a `https://EL_TEU_USUARI.github.io/cel-de-nit/`.
+> **Important:** el camp de visió porta valors de partida orientatius del Dwarf Mini (focal 150 mm, sensor 5,57 × 3,13 mm).
 
 GitHub Pages serveix la pàgina per HTTPS, que és el que cal perquè el botó **Usa la meva ubicació** funcioni.
 
